@@ -53,20 +53,55 @@ public class DadosCarDAO {
 
         }
     }
-   public static int apagarPorTicket(int ticket) {
-        final String SELECT_USERS_SQL = "DELETE FROM veiculos WHERE ticket = ?;";
+    public static boolean transferir(DadosEstac estacionamento) {
+        final String INSERT_ESTACINFO = "insert into estacionamento values(null, ?);"; 
+        // conectar com o BD - desconectar no final
+        // try with resources fecha automaticamente ao final toda conexão aberta
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try  {
+             connection = DriverManager.getConnection(BD_URL, USER, PASSWORD);
+             preparedStatement = 
+                connection.prepareStatement(INSERT_ESTACINFO);
+            preparedStatement.setString(1, estacionamento.getTicket());
+            
+            // enviar o comando
+            preparedStatement.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            } catch (Exception e) {
+                
+            }
+            
+
+        }
+    }
+   public static int atualizarValor(int ticket) {
+        final String ATUALIZAR_PAGO = "UPDATE ValordoTicket SET V = ? WHERE IdTicket= ?;";
          try (Connection conn = DriverManager.getConnection(BD_URL, USER, PASSWORD);
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_USERS_SQL)) {
-            preparedStatement.setInt(1, ticket);
+            PreparedStatement preparedStatement = conn.prepareStatement(ATUALIZAR_PAGO)) {
+             preparedStatement.setInt(1, ticket);
+           
+           
+            
             int registros = preparedStatement.executeUpdate();
             return registros;
+            
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
+            
         }
     }
+   
    public static boolean insert(DadosHoras horarios) {
-        final String INSERT_HOURS = "insert into horario values(null, ?, ?)"; 
+        final String INSERT_HOURS = "insert into horario values(null, ?, ?, ?);"; 
         
         // conectar com o BD - desconectar no final
         // try with resources fecha automaticamente ao final toda conexão aberta
@@ -76,8 +111,9 @@ public class DadosCarDAO {
              connection = DriverManager.getConnection(BD_URL, USER, PASSWORD);
              preparedStatement = 
                 connection.prepareStatement(INSERT_HOURS);
-            preparedStatement.setString(1, horarios.getHora());
-            preparedStatement.setString(2, horarios.getHoraS());
+            preparedStatement.setString(1, horarios.getTicket());
+            preparedStatement.setString(2, horarios.getHora());
+            preparedStatement.setString(3, horarios.getHoraS());
              
          
 
@@ -104,7 +140,7 @@ public class DadosCarDAO {
    
    public static boolean insira(DadosValor valor) {
          
-        final String INSERT_VALOR = "insert into ValordoTicket values (null, ?,?)";
+        final String INSERT_VALOR = "Insert into ValordoTicket values (null, ?,?);";
         // conectar com o BD - desconectar no final
         // try with resources fecha automaticamente ao final toda conexão aberta
         Connection connection = null;
@@ -115,6 +151,8 @@ public class DadosCarDAO {
                 connection.prepareStatement(INSERT_VALOR);
             preparedStatement.setString(1, valor.getPlaca());
             preparedStatement.setString(2, valor.getValor());
+           
+            
              connection.prepareStatement(INSERT_VALOR);
          
 
@@ -135,9 +173,17 @@ public class DadosCarDAO {
             
 
         }
-    }
-
+        
+        
+        }
 }
+
+      
+        
+      
+        
+
+
 
 
      

@@ -22,6 +22,11 @@ public class GeradordeTicket extends javax.swing.JFrame {
         initComponents();
     }
 
+    String valorCalculado;
+    String placacorreta;
+    String horarioCorreto;
+    String ticketcorreto;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -237,49 +242,65 @@ public class GeradordeTicket extends javax.swing.JFrame {
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         
-         
+       
+        
+         String stringTicket = txtTicket.getText();
         String Stringhorario = txtHorario.getText();
         String StringhorarioS = txtHorarioS.getText();
-        String placa = txtPlaca.getText();
+   
         
+     
            
         
      SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-     
-      DadosHoras horarios = new DadosHoras(Stringhorario,StringhorarioS);
-      
-         
-         
-     try{
+     DadosHoras horarios = new DadosHoras(Stringhorario,StringhorarioS,stringTicket);
+     DadosEstac estacionamento = new DadosEstac(stringTicket);
+     if (horarioCorreto.equals(horarios.getHora())) {
+        
+            try{
+          int ticket = Integer.parseInt(stringTicket);
+          boolean transferir = DadosCarDAO.transferir(estacionamento);
+          
          Date hora = sdf.parse(Stringhorario);
          Date horaS = sdf.parse(StringhorarioS);
          
          double horaI = hora.getHours();
          double horaF = horaS.getHours();
          
-       boolean resultado = DadosCarDAO.insert(horarios);
+       boolean inserir = DadosCarDAO.insert(horarios);
        
        
           
          double Diferencahoras = horaF - horaI;
          
-         double Valor = Diferencahoras * 10;
-         Double.toString(Valor);
+         double valor = Diferencahoras * 10;
+         
+          valorCalculado = String.valueOf(valor);
+         
+         
+         
+         cleanFields();
          
          
          
          
-         
-         
-         
-         
-         txtPainel.setText("O valor do seu ticket " + " é: R$ " + Double.toString(Valor));
+         txtPainel.setText("O valor do seu ticket " + " é: R$ " + Double.toString(valor));
          
      }catch(Exception e){
         txtPainel.setText("Valor inválido.");
        
          
      }
+           
+      
+     }else{
+         txtPainel.setText("Horario inexistente.");
+     }
+      
+       
+         
+         
+    
         
         
        
@@ -299,9 +320,13 @@ public class GeradordeTicket extends javax.swing.JFrame {
          String carro = txtCarro.getText();
          String placa = txtPlaca.getText();
          String horario = txtHorario.getText();
+         
+         
+         
          SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         try {
             Date hora = sdf.parse(horario);
+            
         } catch (ParseException ex) {
             txtPainel.setText("Hora inválida.");
         }
@@ -314,7 +339,10 @@ public class GeradordeTicket extends javax.swing.JFrame {
         
          DadosCar carros = new DadosCar(carro, placa, horario);
         
+        
         boolean result = DadosCarDAO.inserir(carros);
+        placacorreta = String.valueOf(placa);
+        horarioCorreto = String.valueOf(horario);
         
         if(result) {
             txtPainel.setText("Inserido com sucesso!");
@@ -346,19 +374,47 @@ public class GeradordeTicket extends javax.swing.JFrame {
        
         
         
-        
+       
+         
+         
+      
          String placa = txtPlaca.getText();
          String Valor = txtValor.getText();
          DadosValor valor = new DadosValor(placa,Valor);
-         boolean resultado = DadosCarDAO.insira(valor);
+         if (valorCalculado.equals(valor.getValor()) && placacorreta.equals(valor.getPlaca())){
+             boolean resultado = DadosCarDAO.insira(valor);
+             txtPainel.setText("Pagamento efetuado com sucesso!");
+            }else{
+             
+             txtPainel.setText("Valor não confere!");
+             } 
+            
+            
+            
+             
+         
+             
+             
+         
+        
+         
+        
+    
+       
+        
+     
+        
+       
+         
+       
+       
+         
+         
+         
         
         
         
-        if(resultado) {
-            txtPainel.setText("Valor pago com sucesso!");
-        } else {
-            txtPainel.setText("Não encontrado");
-        }
+       
         
         
         

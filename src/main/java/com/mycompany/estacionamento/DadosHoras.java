@@ -12,10 +12,11 @@ package com.mycompany.estacionamento;
  */
    
 public class DadosHoras {
+     private String ticket;
      private String horario;
     private String horarioS;
     private String placa;
-    private String Valor;
+    private double Valor;
     
  public DadosHoras() {
         
@@ -26,14 +27,23 @@ public DadosHoras (String horario, String horarioS) {
         this.horario = horario;
         this.horarioS = horarioS;
     }
+public DadosHoras (String horario, String horarioS, String ticket) {
+        
+        this.horario = horario;
+        this.horarioS = horarioS;
+        this.ticket = ticket;
+    }
 
-public DadosHoras (String horario, String horarioS, String placa, String Valor) {
+
+public DadosHoras (String horario, String horarioS, String placa, double Valor) {
         
         this.horario = horario;
         this.horarioS = horarioS;
         this.placa = placa;
         this.Valor = Valor;
     }
+
+
 
 
     
@@ -62,12 +72,20 @@ public DadosHoras (String horario, String horarioS, String placa, String Valor) 
         this.placa = placa;
     }
     
-       public String getValor() {
+       public double getValor() {
         return Valor;
     }
 
-    public void setValor(String Valor) {
+    public void setValor(double Valor) {
         this.Valor = Valor;
+    }
+    
+       public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
     
     

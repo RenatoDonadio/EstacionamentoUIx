@@ -11,6 +11,7 @@ package com.mycompany.estacionamento;
 public class DadosValor {
     private String placa;
     private String Valor;
+   
     
    public DadosValor(){
 
@@ -18,6 +19,7 @@ public class DadosValor {
    public DadosValor(String placa, String Valor){
         this.Valor = Valor;
         this.placa = placa;
+    
        
 
 } 
@@ -36,6 +38,8 @@ public class DadosValor {
     public void setValor(String Valor) {
         this.Valor = Valor;
     }
+    
+   
     
     
 }
