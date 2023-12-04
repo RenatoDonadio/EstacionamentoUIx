@@ -294,7 +294,7 @@ public class GeradordeTicket extends javax.swing.JFrame {
             txtPainel.setText("Nenhum valor inserido.");
             
         }else if("".equals(stringTicket)){
-           txtPainel.setText("Nenhum valor de carro inserido!");
+           txtPainel.setText("Nenhum valor de ticket inserido!");
          
          }else if ("".equals(Stringhorario)){
            txtPainel.setText("Nenhum valor de placa inserido!");
